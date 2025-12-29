@@ -1,0 +1,68 @@
+
+import { GoogleGenAI, Type } from "@google/genai";
+import { TopicCategory, BlogPost, PostStatus, PostLength, CTAType } from "../types";
+
+const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || "" });
+
+export const generateBlogPost = async (
+  category: TopicCategory, 
+  tone: string, 
+  targetAudience: string,
+  length: PostLength,
+  ctaType: CTAType
+): Promise<BlogPost> => {
+  const prompt = `Generate a high-quality, professional blog post for a website focused on sustainability.
+  
+  CONTEXT:
+  Category: ${category}
+  Tone: ${tone}
+  Target Audience: ${targetAudience}
+  Target Length: ${length}
+  Call to Action: ${ctaType}
+
+  REQUIREMENTS:
+  - The post should follow the specified length: ${length}.
+  - Include an engaging, SEO-optimized title.
+  - Compelling introduction.
+  - 3-5 structured sections with clear, descriptive headers.
+  - Technically accurate information regarding ${category === TopicCategory.SUSTAINABLE_CEMENT ? 'low-carbon clinker, carbon capture (CCUS), or alternative fuels' : category}.
+  - Conclude with a clear '${ctaType}' call to action that feels natural to the content.
+  - Return the content in Markdown format.`;
+
+  const response = await ai.models.generateContent({
+    model: "gemini-3-pro-preview",
+    contents: prompt,
+    config: {
+      thinkingConfig: { thinkingBudget: 32768 },
+      responseMimeType: "application/json",
+      responseSchema: {
+        type: Type.OBJECT,
+        properties: {
+          title: { type: Type.STRING },
+          content: { type: Type.STRING, description: "Full markdown content of the blog post" },
+          excerpt: { type: Type.STRING, description: "A 2-sentence summary for SEO" },
+          keywords: {
+            type: Type.ARRAY,
+            items: { type: Type.STRING }
+          },
+          readingTime: { type: Type.INTEGER }
+        },
+        required: ["title", "content", "excerpt", "keywords", "readingTime"]
+      }
+    }
+  });
+
+  const data = JSON.parse(response.text || "{}");
+  
+  return {
+    id: Math.random().toString(36).substr(2, 9),
+    title: data.title || "Untitled Sustainability Post",
+    content: data.content || "",
+    excerpt: data.excerpt || "",
+    category,
+    status: PostStatus.DRAFT,
+    publishDate: new Date().toISOString(),
+    keywords: data.keywords || [],
+    readingTime: data.readingTime || 5
+  };
+};
