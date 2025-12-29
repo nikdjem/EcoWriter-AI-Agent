@@ -1,0 +1,91 @@
+
+import React from 'react';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area } from 'recharts';
+
+const mockData = [
+  { name: 'Week 1', posts: 1, reach: 1200 },
+  { name: 'Week 2', posts: 1, reach: 1800 },
+  { name: 'Week 3', posts: 1, reach: 2400 },
+  { name: 'Week 4', posts: 1, reach: 3100 },
+];
+
+const Dashboard: React.FC = () => {
+  return (
+    <div className="space-y-8 animate-fadeIn">
+      <header>
+        <h2 className="text-3xl font-serif text-slate-900">Agent Performance</h2>
+        <p className="text-slate-500">Automated content flow for sustainable industrial growth.</p>
+      </header>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm">
+          <p className="text-slate-500 text-sm font-medium mb-1">Total Posts Published</p>
+          <p className="text-4xl font-bold text-slate-900">12</p>
+          <div className="mt-4 flex items-center gap-2 text-emerald-600 text-sm">
+            <span className="bg-emerald-50 px-2 py-0.5 rounded-full font-bold">+25%</span>
+            <span>from last month</span>
+          </div>
+        </div>
+        
+        <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm">
+          <p className="text-slate-500 text-sm font-medium mb-1">Next Scheduled</p>
+          <p className="text-4xl font-bold text-slate-900">Mon</p>
+          <div className="mt-4 text-slate-400 text-sm">
+            Category: <span className="text-slate-600 font-medium">Sustainable Cement</span>
+          </div>
+        </div>
+
+        <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm">
+          <p className="text-slate-500 text-sm font-medium mb-1">Content Quality Score</p>
+          <p className="text-4xl font-bold text-slate-900">9.4</p>
+          <div className="mt-4 flex items-center gap-2 text-amber-600 text-sm">
+             <span className="bg-amber-50 px-2 py-0.5 rounded-full font-bold">SEO Optimal</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm">
+          <h3 className="text-lg font-bold mb-6">Organic Reach Growth</h3>
+          <div className="h-64 w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart data={mockData}>
+                <defs>
+                  <linearGradient id="colorReach" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#10b981" stopOpacity={0.1}/>
+                    <stop offset="95%" stopColor="#10b981" stopOpacity={0}/>
+                  </linearGradient>
+                </defs>
+                <XAxis dataKey="name" axisLine={false} tickLine={false} />
+                <YAxis hide />
+                <Tooltip />
+                <Area type="monotone" dataKey="reach" stroke="#10b981" fillOpacity={1} fill="url(#colorReach)" strokeWidth={3} />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
+        <div className="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm">
+          <h3 className="text-lg font-bold mb-6">Topic Distribution</h3>
+          <div className="h-64 w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={[
+                { topic: 'Waste', value: 4 },
+                { topic: 'Energy', value: 3 },
+                { topic: 'Cement', value: 5 },
+              ]}>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                <XAxis dataKey="topic" axisLine={false} tickLine={false} />
+                <YAxis hide />
+                <Tooltip />
+                <Bar dataKey="value" fill="#334155" radius={[4, 4, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Dashboard;
