@@ -1,0 +1,8 @@
+{
+  "name": "EcoWriter AI Agent",
+  "description": "An intelligent content automation agent specialized in waste management, green energy, and sustainable cement production. It generates SEO-optimized blog posts, schedules weekly publishing, and tracks sustainability impact.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
