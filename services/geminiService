@@ -2,7 +2,14 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { TopicCategory, BlogPost, PostStatus, PostLength, CTAType } from "../types";
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || "" });
+// Ensure process.env is treated safely for TypeScript
+const getApiKey = () => {
+  try {
+    return (process as any).env.API_KEY || "";
+  } catch {
+    return "";
+  }
+};
 
 export const generateBlogPost = async (
   category: TopicCategory, 
@@ -11,6 +18,8 @@ export const generateBlogPost = async (
   length: PostLength,
   ctaType: CTAType
 ): Promise<BlogPost> => {
+  const ai = new GoogleGenAI({ apiKey: getApiKey() });
+  
   const prompt = `Generate a high-quality, professional blog post for a website focused on sustainability.
   
   CONTEXT:
