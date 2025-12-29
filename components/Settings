@@ -1,0 +1,118 @@
+
+import React, { useState } from 'react';
+
+const Settings: React.FC = () => {
+  const [websiteUrl, setWebsiteUrl] = useState('https://greenindustry-blog.com');
+  const [cms, setCms] = useState('WordPress');
+
+  return (
+    <div className="max-w-3xl mx-auto animate-fadeIn">
+      <header className="mb-8">
+        <h2 className="text-3xl font-serif text-slate-900">Agent Configuration</h2>
+        <p className="text-slate-500">Fine-tune your AI agent's posting habits and personality.</p>
+      </header>
+
+      <div className="space-y-8">
+        <section className="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm space-y-6">
+          <h3 className="text-lg font-bold flex items-center gap-2">
+            🌐 Destination Site
+          </h3>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-2">
+              <label className="text-sm font-semibold text-slate-600">Website URL</label>
+              <input 
+                type="text" 
+                value={websiteUrl}
+                onChange={(e) => setWebsiteUrl(e.target.value)}
+                className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-emerald-500 focus:outline-none bg-slate-50"
+              />
+            </div>
+            
+            <div className="space-y-2">
+              <label className="text-sm font-semibold text-slate-600">CMS Integration</label>
+              <select 
+                value={cms}
+                onChange={(e) => setCms(e.target.value)}
+                className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-emerald-500 focus:outline-none bg-slate-50"
+              >
+                <option>WordPress</option>
+                <option>Ghost</option>
+                <option>Webflow</option>
+                <option>Custom API</option>
+                <option>Manual Review</option>
+              </select>
+            </div>
+          </div>
+        </section>
+
+        <section className="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm space-y-6">
+          <h3 className="text-lg font-bold flex items-center gap-2">
+            📅 Publication Schedule
+          </h3>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-2">
+              <label className="text-sm font-semibold text-slate-600">Post Frequency</label>
+              <select className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-emerald-500 focus:outline-none bg-slate-50">
+                <option>Once a Week (Recommended)</option>
+                <option>Twice a Week</option>
+                <option>Daily (Advanced)</option>
+              </select>
+            </div>
+            
+            <div className="space-y-2">
+              <label className="text-sm font-semibold text-slate-600">Preferred Day</label>
+              <select className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-emerald-500 focus:outline-none bg-slate-50">
+                <option>Monday</option>
+                <option>Tuesday</option>
+                <option>Wednesday</option>
+                <option>Thursday</option>
+                <option>Friday</option>
+              </select>
+            </div>
+          </div>
+        </section>
+
+        <section className="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm space-y-6">
+          <h3 className="text-lg font-bold flex items-center gap-2">
+            🎭 Persona & Tone
+          </h3>
+          
+          <div className="space-y-4">
+            <div className="flex gap-4">
+              {['Technical', 'Professional', 'Educational', 'Advocacy'].map(tone => (
+                <button 
+                  key={tone}
+                  className={`px-4 py-2 rounded-xl border transition-all text-sm font-medium ${
+                    tone === 'Professional' 
+                      ? 'border-emerald-500 bg-emerald-50 text-emerald-700' 
+                      : 'border-slate-200 text-slate-500 hover:bg-slate-50'
+                  }`}
+                >
+                  {tone}
+                </button>
+              ))}
+            </div>
+            
+            <div className="space-y-2">
+              <label className="text-sm font-semibold text-slate-600">Audience Targeting</label>
+              <textarea 
+                placeholder="Describe your typical reader (e.g., sustainability managers in manufacturing)"
+                className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-emerald-500 focus:outline-none bg-slate-50 min-h-[100px]"
+              />
+            </div>
+          </div>
+        </section>
+
+        <div className="flex justify-end pt-4">
+          <button className="bg-slate-900 text-white px-10 py-4 rounded-2xl font-bold shadow-xl hover:bg-slate-800 transition-all active:scale-95">
+            Save Agent Parameters
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Settings;
